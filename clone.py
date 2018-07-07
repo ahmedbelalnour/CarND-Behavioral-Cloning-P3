@@ -12,7 +12,7 @@ images = []
 measurments = []
 for line in lines:
 	source_path = line[0]
-	filename = source_path.split('\\')[-1]
+	filename = source_path.split('/')[-1]
 	current_path = './simulation_training_data/IMG/' + filename
 	image = cv2.imread(current_path)
 	images.append(image)
@@ -24,15 +24,15 @@ y_train = np.array(measurments)
 
 
 from keras.models import Sequential
-from keras.layers import Flatten, Dense
+from keras.layers import Flatten, Dense, Lambda
 
 
 model = Sequential()
-model.add(Flatten(input_shape = (160,320,3))) 
+model.add(Flatten(input_shape = (160, 320, 3))) 
 model.add(Dense(1))
 
 model.compile(loss = 'mse', optimizer = 'adam')
-model.fit(x_train, y_train, validation_split = 0.2, shuffle = True, nb_epoch = 7)
+model.fit(x_train, y_train, validation_split = 0.2, shuffle = True, nb_epoch = 5)
 
 model.save('model.h5')
 
