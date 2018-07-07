@@ -15,7 +15,6 @@ for line in lines:
 	filename = source_path.split('\\')[-1]
 	current_path = './simulation_training_data/IMG/' + filename
 	image = cv2.imread(current_path)
-	print(current_path)
 	images.append(image)
 	measurment = float(line[3])
 	measurments.append(measurment)
@@ -33,7 +32,7 @@ model.add(Flatten(input_shape = (160,320,3)))
 model.add(Dense(1))
 
 model.compile(loss = 'mse', optimizer = 'adam')
-model.fit(x_train, y_train, validation_split = 0.2, shuffle = True, nb_epoch = 7)
+model.fit(x_train, y_train, validation_split = 0.2, shuffle = True, nb_epoch = 50)
 
 model.save('model.h5')
 
