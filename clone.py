@@ -24,14 +24,15 @@ y_train = np.array(measurments)
 
 
 from keras.models import Sequential
-from keras.layers.core import Dense, Activation, Flatten, Dropout
+from keras.layers.core import Dense, Activation, Flatten, Dropout, Lambda
 from keras.layers.convolutional import Convolution2D
 from keras.layers.pooling import MaxPooling2D
 
 model = Sequential()
+model.add(Lambda(lambda x: (x / 255.0) - 0.5, input_shape=(160,320,3)))
 
 #first convolution layer
-model.add(Convolution2D(6, 5, 5, border_mode='valid', input_shape=(160, 320, 3)))
+model.add(Convolution2D(6, 5, 5, border_mode='valid'))
 model.add(Activation('relu'))
 model.add(MaxPooling2D((2, 2)))
 
