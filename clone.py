@@ -16,12 +16,12 @@ for line in lines:
 	current_path = './simulation_training_data/IMG/' + filename
 	image = cv2.imread(current_path)
 	image_flipped = np.fliplr(image)
-	measurement_flipped = -measurement
 	images.append(image)
 	images.append(image_flipped)
 	measurment = float(line[3])
 	measurments.append(measurment)
-	measurements.append(measurement_flipped)
+	measurment_flipped = -measurment
+	measurments.append(measurment_flipped)
 	
 x_train = np.array(images)
 y_train = np.array(measurments)	
