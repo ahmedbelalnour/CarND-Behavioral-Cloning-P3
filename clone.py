@@ -36,10 +36,11 @@ from keras.models import Sequential
 from keras.layers.core import Dense, Activation, Flatten, Dropout, Lambda
 from keras.layers.convolutional import Convolution2D
 from keras.layers.pooling import MaxPooling2D
+from keras.layers import Cropping2D
 
 model = Sequential()
 model.add(Lambda(lambda x: (x / 255.0) - 0.5, input_shape=(160,320,3)))
-model.add(Cropping2D(cropping=((70,25), (0,0)))
+model.add(Cropping2D(cropping=((70,25), (0,0))))
 #first convolution layer
 model.add(Convolution2D(6, 5, 5, border_mode='valid'))
 model.add(Activation('relu'))
