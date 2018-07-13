@@ -18,11 +18,33 @@ for line in lines:
 	image_flipped = np.fliplr(image)
 	images.append(image)
 	images.append(image_flipped)
-	measurment = float(line[3])
-	measurments.append(measurment)
-	measurment_flipped = -measurment
+	steering_center = float(line[3])
+	measurments.append(steering_center)
+	measurment_flipped = -steering_center
 	measurments.append(measurment_flipped)
+
+    # create adjusted steering measurements for the side camera images
+    correction = 0.2 # this is a parameter to tune
+    steering_left = steering_center + correction
+    steering_right = steering_center - correction
+
+
+	source_path = line[1]
+	filename = source_path.split('/')[-1]
+	current_path = './simulation_training_data/IMG/' + filename
+	image = cv2.imread(current_path)
+	images.append(image)
+	side_measurment = float(line[3]) + 0.2
+	measurments.append(side_measurment)
 	
+	source_path = line[2]
+	filename = source_path.split('/')[-1]
+	current_path = './simulation_training_data/IMG/' + filename
+	image = cv2.imread(current_path)
+	images.append(image)
+	side_measurment = float(line[3]) - 0.2
+	measurments.append(side_measurment)
+
 x_train = np.array(images)
 y_train = np.array(measurments)	
 
