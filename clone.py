@@ -2,6 +2,9 @@ import csv
 import cv2
 import numpy as np
 
+def process_image(image):
+	return image
+
 lines = []
 with open('./simulation_training_data/driving_log.csv') as csvfile:
 	reader = csv.reader(csvfile)
@@ -10,43 +13,24 @@ with open('./simulation_training_data/driving_log.csv') as csvfile:
 
 images = []
 measurments = []
+
+correction_factor = [0.0, +0.2, -0.2]
 for line in lines:
-	source_path = line[0]
-	filename = source_path.split('/')[-1]
-	current_path = './simulation_training_data/IMG/' + filename
-	image = cv2.imread(current_path)
-	image_flipped = np.fliplr(image)
-	images.append(image)
-	images.append(image_flipped)
-	steering_center = float(line[3])
-	measurments.append(steering_center)
-	measurment_flipped = -steering_center
-	measurments.append(measurment_flipped)
+	for i in range(3):
+		source_path = line[i]
+		filename = source_path.split('/')[-1]
+		current_path = './simulation_training_data/IMG/' + filename
+		image = cv2.imread(current_path)
+		image_flipped = np.fliplr(image)
+		images.append(image)
+		images.append(image_flipped)
+		steering = float(line[3]) + correction_factor[i]
+		measurments.append(steering)
+		measurment_flipped = -steering
+		measurments.append(measurment_flipped)
 
-        # create adjusted steering measurements for the side camera images
-	correction = 0.2 # this is a parameter to tune
-	steering_left = steering_center + correction
-	steering_right = steering_center - correction
-
-
-	source_path = line[1]
-	filename = source_path.split('/')[-1]
-	current_path = './simulation_training_data/IMG/' + filename
-	image = cv2.imread(current_path)
-	images.append(image)
-	side_measurment = float(line[3]) + 0.2
-	measurments.append(side_measurment)
-
-	source_path = line[2]
-	filename = source_path.split('/')[-1]
-	current_path = './simulation_training_data/IMG/' + filename
-	image = cv2.imread(current_path)
-	images.append(image)
-	side_measurment = float(line[3]) - 0.2
-	measurments.append(side_measurment)
-
-x_train = np.array(images)
-y_train = np.array(measurments)
+x_train = process_image(np.array(images))
+y_train = process_image(np.array(measurments))
 
 from keras.models import Sequential
 from keras.layers.core import Dense, Activation, Flatten, Dropout, Lambda
