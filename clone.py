@@ -23,10 +23,10 @@ for line in lines:
 	measurment_flipped = -steering_center
 	measurments.append(measurment_flipped)
 
-    # create adjusted steering measurements for the side camera images
-    correction = 0.2 # this is a parameter to tune
-    steering_left = steering_center + correction
-    steering_right = steering_center - correction
+        # create adjusted steering measurements for the side camera images
+	correction = 0.2 # this is a parameter to tune
+	steering_left = steering_center + correction
+	steering_right = steering_center - correction
 
 
 	source_path = line[1]
@@ -36,7 +36,7 @@ for line in lines:
 	images.append(image)
 	side_measurment = float(line[3]) + 0.2
 	measurments.append(side_measurment)
-	
+
 	source_path = line[2]
 	filename = source_path.split('/')[-1]
 	current_path = './simulation_training_data/IMG/' + filename
@@ -46,8 +46,7 @@ for line in lines:
 	measurments.append(side_measurment)
 
 x_train = np.array(images)
-y_train = np.array(measurments)	
-
+y_train = np.array(measurments)
 
 from keras.models import Sequential
 from keras.layers.core import Dense, Activation, Flatten, Dropout, Lambda
