@@ -11,26 +11,45 @@ with open('./simulation_training_data/driving_log.csv') as csvfile:
 	for row in reader:
 		lines.append(row)
 
-images = []
-measurments = []
+from sklearn.model_selection import train_test_split
+train_samples, validation_samples = train_test_split(lines, test_size=0.2)
+import sklearn
+from sklearn.utils import shuffle
 
-correction_factor = [0.0, +0.2, -0.2]
-for line in lines:
-	for i in range(3):
-		source_path = line[i]
-		filename = source_path.split('/')[-1]
-		current_path = './simulation_training_data/IMG/' + filename
-		image = cv2.imread(current_path)
-		image_flipped = np.fliplr(image)
-		images.append(image)
-		images.append(image_flipped)
-		steering = float(line[3]) + correction_factor[i]
-		measurments.append(steering)
-		measurment_flipped = -steering
-		measurments.append(measurment_flipped)
+def generator(samples, batch_size = 32):
+	num_samples = len(samples)
+	correction_factor = [0.0, +0.2, -0.2]
 
-x_train = process_image(np.array(images))
-y_train = process_image(np.array(measurments))
+	while 1: # Loop forever so the generator never terminates
+		shuffle(samples)
+		for offset in range(0, num_samples, batch_size):
+			batch_samples = samples[offset:offset+batch_size]
+			
+			images = []
+			measurments = []
+			
+			for batch_sample in batch_samples:
+				for i in range(3):
+					#print("batch_sample: ", batch_sample)
+					source_path = batch_sample[i]
+					filename = source_path.split('/')[-1]
+					current_path = './simulation_training_data/IMG/' + filename
+					image = cv2.imread(current_path)
+					image_flipped = np.fliplr(image)
+					images.append(image)
+					images.append(image_flipped)
+					steering = float(batch_sample[3]) + correction_factor[i]
+					measurments.append(steering)
+					measurment_flipped = -steering
+					measurments.append(measurment_flipped)
+
+			x_data = process_image(np.array(images))
+			y_data = process_image(np.array(measurments))
+			yield sklearn.utils.shuffle(x_data, y_data)
+
+# compile and train the model using the generator function
+train_generator = generator(train_samples, batch_size=32)
+validation_generator = generator(validation_samples, batch_size=32)
 
 from keras.models import Sequential
 from keras.layers.core import Dense, Activation, Flatten, Dropout, Lambda
@@ -59,7 +78,10 @@ model.add(Activation('relu'))
 model.add(Dense(1))
 
 model.compile(loss = 'mse', optimizer = 'adam')
-history_object = model.fit(x_train, y_train, validation_split = 0.2, shuffle = True, nb_epoch = 5)
+#history_object = model.fit(x_train, y_train, validation_split = 0.2, shuffle = True, nb_epoch = 5)
+model.fit_generator(train_generator, samples_per_epoch = len(train_samples), 
+	validation_data=validation_generator,
+	nb_val_samples=len(validation_samples), nb_epoch=3)
 
 model.save('model.h5')
 
