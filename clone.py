@@ -60,21 +60,49 @@ from keras.layers import Cropping2D
 model = Sequential()
 model.add(Lambda(lambda x: (x / 255.0) - 0.5, input_shape=(160,320,3)))
 model.add(Cropping2D(cropping=((70,25), (0,0))))
+
 #first convolution layer
-model.add(Convolution2D(6, 5, 5, border_mode='valid'))
+model.add(Convolution2D(24, 5, 5, border_mode='valid'))
 model.add(Activation('relu'))
 model.add(MaxPooling2D((2, 2)))
 
 #second convolution layer
-model.add(Convolution2D(16, 5, 5, border_mode='valid'))
+model.add(Convolution2D(36, 5, 5, border_mode='valid'))
+model.add(Activation('relu'))
+
+#third convolution layer
+model.add(Convolution2D(48, 5, 5, border_mode='valid'))
+model.add(Activation('relu'))
+model.add(MaxPooling2D((2, 2)))
+
+#forth convolution layer
+model.add(Convolution2D(64, 3, 3, border_mode='valid'))
+model.add(Activation('relu'))
+
+#fifth convolution layer
+model.add(Convolution2D(64, 3, 3, border_mode='valid'))
 model.add(Activation('relu'))
 model.add(MaxPooling2D((2, 2)))
 
 model.add(Flatten())
 
-model.add(Dense(84))
+#first fully connected
+model.add(Dense(1164))
 model.add(Activation('relu'))
 
+#second fully connected
+model.add(Dense(100))
+model.add(Activation('relu'))
+
+#third fully connected
+model.add(Dense(50))
+model.add(Activation('relu'))
+
+#forth fully connected
+model.add(Dense(10))
+model.add(Activation('relu'))
+
+#forth/last fully connected
 model.add(Dense(1))
 
 model.compile(loss = 'mse', optimizer = 'adam')
