@@ -70,6 +70,9 @@ model.add(MaxPooling2D((2, 2)))
 model.add(Convolution2D(36, 5, 5, border_mode='valid'))
 model.add(Activation('relu'))
 
+#first dropout layer
+model.add(Dropout(0.2))
+
 #third convolution layer
 model.add(Convolution2D(48, 5, 5, border_mode='valid'))
 model.add(Activation('relu'))
@@ -78,6 +81,9 @@ model.add(MaxPooling2D((2, 2)))
 #forth convolution layer
 model.add(Convolution2D(64, 3, 3, border_mode='valid'))
 model.add(Activation('relu'))
+
+#second dropout layer
+model.add(Dropout(0.4))
 
 #fifth convolution layer
 model.add(Convolution2D(64, 3, 3, border_mode='valid'))
@@ -93,6 +99,9 @@ model.add(Activation('relu'))
 #second fully connected
 model.add(Dense(100))
 model.add(Activation('relu'))
+
+#third dropout layer
+model.add(Dropout(0.5))
 
 #third fully connected
 model.add(Dense(50))
