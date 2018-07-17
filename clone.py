@@ -65,35 +65,28 @@ model.add(Lambda(lambda x: (x / 255.0) - 0.5, input_shape=(160,320,1)))
 model.add(Cropping2D(cropping=((70,25), (0,0))))
 
 #first convolution layer
-model.add(Convolution2D(32, 5, 5, border_mode='valid'))
-model.add(Activation('relu'))
-model.add(MaxPooling2D((2, 2)))
+model.add(Convolution2D(32, 5, 5, subsample = (2,2), activation = 'relu'))
 
 #second convolution layer
-model.add(Convolution2D(64, 5, 5, border_mode='valid'))
-model.add(Activation('relu'))
+model.add(Convolution2D(64, 5, 5, subsample = (2,2), activation = 'relu'))
 
 #third convolution layer
-model.add(Convolution2D(128, 5, 5, border_mode='valid'))
-model.add(Activation('relu'))
-model.add(MaxPooling2D((2, 2)))
+model.add(Convolution2D(128, 5, 5, subsample = (2,2), activation = 'relu'))
 
 #forth convolution layer
-model.add(Convolution2D(256, 3, 3, border_mode='valid'))
-model.add(Activation('relu'))
+model.add(Convolution2D(256, 3, 3, activation = 'relu'))
 
 #second dropout layer
 model.add(Dropout(0.4))
 
 #fifth convolution layer
-model.add(Convolution2D(256, 3, 3, border_mode='valid'))
-model.add(Activation('relu'))
+model.add(Convolution2D(256, 3, 3, activation = 'relu'))
 
 model.add(Flatten())
 
 #first fully connected
-model.add(Dense(1164))
-model.add(Activation('relu'))
+#model.add(Dense(1164))
+#model.add(Activation('relu'))
 
 #second fully connected
 model.add(Dense(100))
