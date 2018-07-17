@@ -36,8 +36,8 @@ def generator(samples, batch_size = 32):
 					filename = source_path.split('/')[-1]
 					current_path = './simulation_training_data/IMG/' + filename
 					image = cv2.imread(current_path)
-					image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
-					image = image[..., newaxis]
+					#image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+					#image = image[..., newaxis]
 					image_flipped = np.fliplr(image)
 					images.append(image)
 					images.append(image_flipped)
@@ -61,7 +61,7 @@ from keras.layers.pooling import MaxPooling2D
 from keras.layers import Cropping2D
 
 model = Sequential()
-model.add(Lambda(lambda x: (x / 255.0) - 0.5, input_shape=(160,320,1)))
+model.add(Lambda(lambda x: (x / 255.0) - 0.5, input_shape=(160,320,3)))
 model.add(Cropping2D(cropping=((70,25), (0,0))))
 
 #first convolution layer
