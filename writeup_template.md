@@ -2,9 +2,6 @@
 
 ## Writeup Template
 
-### You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
-
----
 
 **Behavioral Cloning Project**
 
@@ -18,13 +15,12 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./examples/placeholder.png "Model Visualization"
-[image2]: ./examples/placeholder.png "Grayscaling"
-[image3]: ./examples/placeholder_small.png "Recovery Image"
-[image4]: ./examples/placeholder_small.png "Recovery Image"
-[image5]: ./examples/placeholder_small.png "Recovery Image"
-[image6]: ./examples/placeholder_small.png "Normal Image"
-[image7]: ./examples/placeholder_small.png "Flipped Image"
+[image2]: ./examples/center.jpg "Grayscaling"
+[image3]: ./examples/center_rec_1.jpg "Recovery Image"
+[image4]: ./examples/center_rec_2.jpg "Recovery Image"
+[image5]: ./examples/center_rec_3.jpg "Recovery Image"
+[image6]: ./examples/left_normal.jpg "Normal Image"
+[image7]: ./examples/left_flipped.jpg "Flipped Image"
 
 ## Rubric Points
 ### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
@@ -102,20 +98,18 @@ To capture good driving behavior, I first recorded two laps on track one using c
 
 ![alt text][image2]
 
-I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to .... These images show what a recovery looks like starting from ... :
+I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to recover when it is on the road edges. These images show what a recovery looks like starting from left to right:
 
 ![alt text][image3]
 ![alt text][image4]
 ![alt text][image5]
-
-Then I repeated this process on track two in order to get more data points.
 
 To augment the data set, I also flipped images thinking that this would help generalizing the model. For example, here is an image that has then been flipped:
 
 ![alt text][image6]
 ![alt text][image7]
 
-After the collection process, I had 29358 of data points. I then preprocessed this data by applying grey scale to them.
+After the collection process, I had 29358 of data points.
 
 I finally randomly shuffled the data set and put 20% of the data into a validation set. 
 
