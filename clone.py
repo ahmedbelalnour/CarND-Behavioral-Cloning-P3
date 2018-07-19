@@ -1,7 +1,6 @@
 import csv
 import cv2
 import numpy as np
-from numpy import newaxis
 
 def process_image(image):
 	return image
@@ -36,8 +35,6 @@ def generator(samples, batch_size = 32):
 					filename = source_path.split('/')[-1]
 					current_path = './simulation_training_data/IMG/' + filename
 					image = cv2.imread(current_path)
-					#image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
-					#image = image[..., newaxis]
 					image_flipped = np.fliplr(image)
 					images.append(image)
 					images.append(image_flipped)
@@ -65,28 +62,33 @@ model.add(Lambda(lambda x: (x / 255.0) - 0.5, input_shape=(160,320,3)))
 model.add(Cropping2D(cropping=((70,25), (0,0))))
 
 #first convolution layer
-model.add(Convolution2D(32, 5, 5, subsample = (2,2), activation = 'relu'))
+model.add(Convolution2D(24, 5, 5, border_mode='valid'))
+model.add(Activation('relu'))
+model.add(MaxPooling2D((2, 2)))
 
 #second convolution layer
-model.add(Convolution2D(64, 5, 5, subsample = (2,2), activation = 'relu'))
+model.add(Convolution2D(36, 5, 5, border_mode='valid'))
+model.add(Activation('relu'))
 
 #third convolution layer
-model.add(Convolution2D(128, 5, 5, subsample = (2,2), activation = 'relu'))
+model.add(Convolution2D(48, 5, 5, border_mode='valid'))
+model.add(Activation('relu'))
+model.add(MaxPooling2D((2, 2)))
 
 #forth convolution layer
-model.add(Convolution2D(256, 3, 3, activation = 'relu'))
-
-#second dropout layer
-#model.add(Dropout(0.2))
+model.add(Convolution2D(64, 3, 3, border_mode='valid'))
+model.add(Activation('relu'))
 
 #fifth convolution layer
-model.add(Convolution2D(256, 3, 3, activation = 'relu'))
+model.add(Convolution2D(64, 3, 3, border_mode='valid'))
+model.add(Activation('relu'))
+model.add(MaxPooling2D((2, 2)))
 
 model.add(Flatten())
 
 #first fully connected
-#model.add(Dense(1164))
-#model.add(Activation('relu'))
+model.add(Dense(1164))
+model.add(Activation('relu'))
 
 #second fully connected
 model.add(Dense(100))
@@ -113,15 +115,14 @@ model.save('model.h5')
 
 import matplotlib.pyplot as plt
 
-
 ### print the keys contained in the history object
-# print(history_object.history.keys())
+print(history_object.history.keys())
 
 ### plot the training and validation loss for each epoch
-# plt.plot(history_object.history['loss'])
-# plt.plot(history_object.history['val_loss'])
-#plt.title('model mean squared error loss')
-#plt.ylabel('mean squared error loss')
-#plt.xlabel('epoch')
-#plt.legend(['training set', 'validation set'], loc='upper right')
-#plt.show()
+plt.plot(history_object.history['loss'])
+plt.plot(history_object.history['val_loss'])
+plt.title('model mean squared error loss')
+plt.ylabel('mean squared error loss')
+plt.xlabel('epoch')
+plt.legend(['training set', 'validation set'], loc='upper right')
+plt.show()
