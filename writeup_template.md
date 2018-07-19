@@ -56,8 +56,6 @@ The model includes RELU layers to introduce nonlinearity (code line 20), and the
 
 #### 2. Attempts to reduce overfitting in the model
 
-The model contains dropout layers in order to reduce overfitting (model.py lines 83). 
-
 The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 111-117). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
 #### 3. Model parameter tuning
@@ -80,8 +78,6 @@ My first step was to use a convolution neural network model similar to the NVIDI
 
 In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
 
-To combat the overfitting, I modified the model so that it has dropout layer of 40% after the last convolution layer.
-
 Then I flattened the input and used 3 fully connected networks, and the last fully connected network has only one neuron which is responsible for deciding the driving angle of the car.
 
 The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track like the regions that has no yellow guide line on the left or the right to improve the driving behavior in these cases, I added a special training data for these situations.
@@ -90,7 +86,7 @@ At the end of the process, the vehicle is able to drive autonomously around the 
 
 #### 2. Final Model Architecture
 
-The final model architecture (model.py lines 60-109) consisted of a convolution neural network with the following layers and layer sizes ...
+The final model architecture (model.py lines 60-109) consisted of a convolution neural network. 
 
 #### 3. Creation of the Training Set & Training Process
 
