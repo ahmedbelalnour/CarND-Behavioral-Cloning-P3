@@ -77,7 +77,7 @@ model.add(Convolution2D(128, 5, 5, subsample = (2,2), activation = 'relu'))
 model.add(Convolution2D(256, 3, 3, activation = 'relu'))
 
 #second dropout layer
-model.add(Dropout(0.4))
+#model.add(Dropout(0.2))
 
 #fifth convolution layer
 model.add(Convolution2D(256, 3, 3, activation = 'relu'))
